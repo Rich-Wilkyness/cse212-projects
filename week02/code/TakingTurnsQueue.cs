@@ -8,9 +8,10 @@
 /// not be added back into the queue.
 /// </summary>
 public class TakingTurnsQueue {
-    private readonly PersonQueue _people = new();
+    
+    private Queue<Person> _people = new Queue<Person>();
 
-    public int Length => _people.Length;
+    public int Length => _people.Count;
 
     /// <summary>
     /// Add new people to the queue with a name and number of turns
@@ -30,12 +31,15 @@ public class TakingTurnsQueue {
     /// if the queue is empty.
     /// </summary>
     public void GetNextPerson() {
-        if (_people.IsEmpty())
+        if (_people.Count == 0) {
             Console.WriteLine("No one in the queue.");
+        }
         else {
             Person person = _people.Dequeue();
             if (person.Turns > 1) {
                 person.Turns -= 1;
+                _people.Enqueue(person);
+            } else if (person.Turns <= 0) {
                 _people.Enqueue(person);
             }
 

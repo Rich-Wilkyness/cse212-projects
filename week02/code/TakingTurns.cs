@@ -18,7 +18,7 @@
         // Console.WriteLine(players);    // This can be un-commented out for debug help
         while (players.Length > 0)
             players.GetNextPerson();
-        // Defect(s) Found: 
+        // Defect(s) Found: The queue was not a queue? it was just a new array i think. created a queue with type Person. Changed length to be calculated using .Count. 
 
         Console.WriteLine("---------");
 
@@ -63,7 +63,7 @@
             players.GetNextPerson();
             // Console.WriteLine(players);
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: added an else if statement for persons with 0 or less turns
 
         Console.WriteLine("---------");
 
@@ -82,18 +82,18 @@
             players.GetNextPerson();
             // Console.WriteLine(players);
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: added an else if statement for persons with 0 or less turns
 
         Console.WriteLine("---------");
 
         // Test 5
         // Scenario: Try to get the next person from an empty queue
         // Expected Result: Error message should be displayed
-        // Test Results: No one in the queue x1
+        // Test Results: No one in the queue x1 - guess this is the error message
         Console.WriteLine("Test 5");
         players = new TakingTurnsQueue();
         players.GetNextPerson();
-        // Defect(s) Found:
+        // Defect(s) Found: working as expected. unless you want something other than a console statement. 
     }
 }
 
