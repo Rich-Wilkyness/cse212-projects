@@ -1,8 +1,11 @@
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Xml.XPath;
 
 public static class SetsAndMapsTester {
     public static void Run() {
         // Problem 1: Find Pairs with Sets
+
         Console.WriteLine("\n=========== Finding Pairs TESTS ===========");
         DisplayPairs(new[] { "am", "at", "ma", "if", "fi" });
         // ma & am
@@ -57,7 +60,7 @@ public static class SetsAndMapsTester {
         maze.ShowStatus(); // Should be at (1,1)
         maze.MoveUp(); // Error
         maze.MoveLeft(); // Error
-        maze.MoveRight();
+        maze.MoveRight(); 
         maze.MoveRight(); // Error
         maze.MoveDown();
         maze.MoveDown();
@@ -108,19 +111,31 @@ public static class SetsAndMapsTester {
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     private static void DisplayPairs(string[] words) {
+        // symmetric pairs of 2 letter words in a list O(n)
+        // lower case, 2 chars, no duplicates (am, at, ma, if, fi) => result is (am, ma) (if, fi)
+        // if it is aa, it is not a pair
         // To display the pair correctly use something like:
         // Console.WriteLine($"{word} & {pair}");
         // Each pair of words should displayed on its own line.
+        var set = new HashSet<string>();
+        foreach (var word in words) {
+            var pair = new string(new[] { word[1], word[0] });
+            if (set.Contains(pair)) {
+                Console.WriteLine($"{word} & {pair}");
+            } else {
+                set.Add(word);
+            }
+        }
     }
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
-    /// earned by those contained in the file.  The summary
-    /// should be stored in a dictionary where the key is the
-    /// degree earned and the value is the number of people that 
-    /// have earned that degree.  The degree information is in
-    /// the 4th column of the file.  There is no header row in the
-    /// file.
+    /// earned by those contained in the file.  
+    // The summary should be stored in a dictionary 
+    // Key = degree earned 
+    // Value is the number of people who have earned that degree.  
+    // The degree information is in the 4th column of the file.  
+    // There is no header row in the file.
     /// </summary>
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
@@ -132,8 +147,13 @@ public static class SetsAndMapsTester {
         foreach (var line in File.ReadLines(filename)) {
             var fields = line.Split(",");
             // Todo Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree)) {
+                degrees[degree]++;
+            } else {
+                degrees.Add(degree, 1);
+            }
         }
-
         return degrees;
     }
 
@@ -158,8 +178,41 @@ public static class SetsAndMapsTester {
     /// #############
     private static bool IsAnagram(string word1, string word2) {
         // Todo Problem 3 - ADD YOUR CODE HERE
-        return false;
-    }
+        word1 = RemoveSpacesAndLowerCase(word1);
+        word2 = RemoveSpacesAndLowerCase(word2);
+
+        if (word1.Length != word2.Length) {
+            return false;
+        }
+
+        Dictionary<char, int> dictionary1 = CreateDictionary(word1);
+        Dictionary<char, int> dictionary2 = CreateDictionary(word2);
+
+        static string RemoveSpacesAndLowerCase(string input) {
+            string result = input.Replace(" ", "");
+            result = result.ToLower();
+            return result;
+        }
+
+// create dictionaries of each word broken down into characters
+        static Dictionary<char, int> CreateDictionary(string word) {
+            Dictionary<char, int> dictionary = new Dictionary<char, int>();
+
+            foreach (char letter in word) {
+                if(dictionary.ContainsKey(letter)) {
+                    dictionary[letter]++;
+                }
+                else {
+                    dictionary[letter] = 1;
+                }
+            }
+            return dictionary;
+        }
+// sort both dictionaries so we can compare equality
+        var sortedDict1 = dictionary1.OrderBy(pair => pair.Key);
+        var sortedDict2 = dictionary2.OrderBy(pair => pair.Key);        
+        return sortedDict1.SequenceEqual(sortedDict2);
+        }
 
     /// <summary>
     /// Sets up the maze dictionary for problem 4
@@ -235,5 +288,24 @@ public static class SetsAndMapsTester {
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to print out each place a earthquake has happened today and its magitude.
+        if (featureCollection.features.Length > 0) {
+            foreach (Feature feature in featureCollection.features) {
+                long timeInMillis = feature.properties.time;
+                if (isToday(timeInMillis)) {
+                    string place = feature.properties.place;
+                    decimal magitude = feature.properties.mag;
+                
+                    Console.WriteLine(place + "- Mag " + magitude);
+                }
+            }
+        }
+// was not sure if that data being sent is from today or we needed to determine it
+        static bool isToday(long timeInMillis) {
+            DateTime today = DateTime.Today;
+            DateTime dateTime = DateTimeOffset.FromUnixTimeMilliseconds(timeInMillis).LocalDateTime;
+            if (dateTime.Date == today) {
+                return true;
+            } else return false;
+        }
     }
 }

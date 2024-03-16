@@ -24,7 +24,19 @@ public class Translator
     /// <returns>fixed array of divisors</returns>
     public void AddWord(string fromWord, string toWord)
     {
-        // ADD YOUR CODE HERE
+        if (fromWord == null || toWord == null)
+        {
+            throw new ArgumentNullException();
+        } else {
+            if (!_words.ContainsKey(fromWord))
+            {
+                _words.Add(fromWord, toWord);
+            }
+            else
+            {
+                Console.WriteLine("Word already exists in the dictionary!");
+            }
+        }
     }
 
     /// <summary>
@@ -34,7 +46,19 @@ public class Translator
     /// <returns>The translated word or "???" if no translation is available</returns>
     public string Translate(string fromWord)
     {
-        // ADD YOUR CODE HERE
-        return "";
+        if (fromWord == null)
+        {
+            throw new ArgumentNullException();
+        }
+        else {
+            if (_words.ContainsKey(fromWord))
+            {
+                var german = _words[fromWord];
+                return german;
+            }
+            else {
+                return "???";
+            }
+        }
     }
 }

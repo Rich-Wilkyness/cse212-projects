@@ -18,6 +18,8 @@ public class Maze {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
     private int _currX = 1;
     private int _currY = 1;
+    private ValueTuple<int, int> currentPosition;
+
 
     public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap) {
         _mazeMap = mazeMap;
@@ -30,6 +32,13 @@ public class Maze {
     /// </summary>
     public void MoveLeft() {
         // FILL IN CODE
+        currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][0] == true) {
+            _currX--; 
+            Console.WriteLine(currentPosition);
+        } else {
+            Console.WriteLine("Can't go that way!");
+        }
     }
 
     /// <summary>
@@ -38,6 +47,13 @@ public class Maze {
     /// </summary>
     public void MoveRight() {
         // FILL IN CODE
+        currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][1] == true) {
+            _currX++;
+            Console.WriteLine(currentPosition);
+        } else {
+            Console.WriteLine("Can't go that way!");
+        }
     }
 
     /// <summary>
@@ -46,6 +62,13 @@ public class Maze {
     /// </summary>
     public void MoveUp() {
         // FILL IN CODE
+        currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][2] == true) {
+            _currY--; 
+            Console.WriteLine(currentPosition);
+        } else {
+            Console.WriteLine("Can't go that way!");
+        }
     }
 
     /// <summary>
@@ -54,6 +77,13 @@ public class Maze {
     /// </summary>
     public void MoveDown() {
         // FILL IN CODE
+        currentPosition = (_currX, _currY);
+        if (_mazeMap[currentPosition][3] == true) {
+            _currY++; 
+            Console.WriteLine(currentPosition);
+        } else {
+            Console.WriteLine("Can't go that way!");
+        }
     }
 
     public void ShowStatus() {
