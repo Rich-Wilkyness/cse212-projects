@@ -66,6 +66,22 @@ public class BinarySearchTree : IEnumerable<int> {
 
     private void TraverseBackward(Node? node, List<int> values) {
         // TODO Problem 3
+        // backward = largest (furthest right) to smallest
+        if (node != null) {
+            TraverseBackward(node.Right, values); // iterate to get to the furthest Right value.
+            // once the base case is reached, the values will be added to our list recursively 
+            values.Add(node.Data);
+            TraverseBackward(node.Left, values); // the order here is important, we are adding the values as we recursively move left.
+            // values.add is before the recursive call to move left
+            ///
+            ///                                9
+            ///                5                                13 
+            ///         3              7                11              15
+            ///     2       4      6       8       10      12      14        16
+            ///     traversbackward goes 9, 13, 15, 16
+            ///     16 is added, recurs to 15 and added, traverses to 14, checks if there is anything to the right, then adds 14
+            ///     this continues until all values in the tree are added. 
+        }
     }
 
     /// <summary>
