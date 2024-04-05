@@ -158,7 +158,7 @@ public static class RecursionTester {
         } else if (n == 1) {
             return 1; // base case at n = 1 the value will be 1 and where we want to end recurssion 
         } else {
-            return n^2 + SumSquaresRecursive(n-1); 
+            return n * n + SumSquaresRecursive(n-1); 
         }
     }
 
